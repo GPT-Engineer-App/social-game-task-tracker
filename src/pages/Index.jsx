@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Container, VStack, Input, Button, Table, Thead, Tbody, Tr, Th, Td, Text, IconButton } from "@chakra-ui/react";
+import { Container, VStack, Input, Button, Table, Thead, Tbody, Tr, Th, Td, Text, IconButton, Textarea } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 
 const Index = () => {
   const [participants, setParticipants] = useState([{ name: "", phone: "", word: "" }]);
   const [messages, setMessages] = useState([]);
+  const [bulkInput, setBulkInput] = useState("");
 
   const handleInputChange = (index, event) => {
     const values = [...participants];
@@ -34,10 +35,29 @@ const Index = () => {
     setMessages(newMessages);
   };
 
+  const handleBulkInputChange = (event) => {
+    setBulkInput(event.target.value);
+  };
+
+  const handleBulkInputSubmit = () => {
+    const lines = bulkInput.split("\n");
+    const newParticipants = lines.map(line => {
+      const [name, phone] = line.split(",").map(item => item.trim());
+      return { name, phone, word: "" };
+    });
+    setParticipants(newParticipants);
+  };
+
   return (
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
       <VStack spacing={4} width="100%">
         <Text fontSize="2xl">Social Game Setup</Text>
+        <Textarea
+          placeholder="Paste names and phone numbers here, one per line (e.g., 'Name, Phone')"
+          value={bulkInput}
+          onChange={handleBulkInputChange}
+        />
+        <Button onClick={handleBulkInputSubmit}>Add Participants from Bulk Input</Button>
         {participants.map((participant, index) => (
           <VStack key={index} spacing={2} width="100%">
             <Input
