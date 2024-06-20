@@ -48,10 +48,21 @@ const Index = () => {
     setParticipants(newParticipants);
   };
 
+  const downloadCSV = () => {
+    const csvContent = "data:text/csv;charset=utf-8," + messages.map(m => `${m.name},${m.phone},${m.message}`).join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "messages.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
-    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" bg="gray.50" p={4}>
+    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" bgImage="url('/images/bumble-words-background.jpg')" bgSize="cover" p={4}>
       <VStack spacing={4} width="100%">
-        <Heading as="h1" size="2xl" mb={4}>Social Game</Heading>
+        <Heading as="h1" size="2xl" mb={4}>Say It!</Heading>
         <Text fontSize="lg" mb={6}>Welcome to the Social Game! The objective is to make your assigned partner say a specific word. Have fun!</Text>
         <Textarea
           placeholder="Paste names and phone numbers here, one per line (e.g., 'Name, Phone')"
@@ -88,6 +99,7 @@ const Index = () => {
         ))}
         <Button onClick={handleAddParticipant}>Add Participant</Button>
         <Button onClick={generateMessages}>Generate Messages</Button>
+        <Button onClick={downloadCSV}>Download Table as CSV</Button>
         {messages.length > 0 && (
           <Table variant="simple">
             <Thead>
