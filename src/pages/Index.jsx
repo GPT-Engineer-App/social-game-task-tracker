@@ -60,7 +60,19 @@ const Index = () => {
   };
 
   return (
-    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" bgImage="url('/images/new-background.jpg')" bgSize="cover" p={4}>
+    <Container
+      centerContent
+      maxW="container.md"
+      height="100vh"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      bgImage="url('/images/bumble-words-background.jpg')"
+      bgSize="cover"
+      bgPosition="center"
+      p={4}
+    >
       <VStack spacing={4} width="100%">
         <Heading as="h1" size="2xl" mb={4}>Say It!</Heading>
         <Text fontSize="lg" mb={6}>Welcome to the Social Game! The objective is to make your assigned partner say a specific word. Have fun!</Text>
