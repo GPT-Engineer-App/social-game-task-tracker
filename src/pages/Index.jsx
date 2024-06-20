@@ -1,17 +1,92 @@
-// Update this page (the content is just a fallback if you fail and example)
-// Use chakra-ui
-import { Container, Text, VStack } from "@chakra-ui/react";
-
-// Example of using react-icons
-// import { FaRocket } from "react-icons/fa";
-// <IconButton aria-label="Add" icon={<FaRocket />} size="lg" />; // IconButton would also have to be imported from chakra
+import React, { useState } from "react";
+import { Container, VStack, Input, Button, Table, Thead, Tbody, Tr, Th, Td, Text, IconButton } from "@chakra-ui/react";
+import { FaTrash } from "react-icons/fa";
 
 const Index = () => {
+  const [participants, setParticipants] = useState([{ name: "", phone: "", word: "" }]);
+  const [messages, setMessages] = useState([]);
+
+  const handleInputChange = (index, event) => {
+    const values = [...participants];
+    values[index][event.target.name] = event.target.value;
+    setParticipants(values);
+  };
+
+  const handleAddParticipant = () => {
+    setParticipants([...participants, { name: "", phone: "", word: "" }]);
+  };
+
+  const handleRemoveParticipant = (index) => {
+    const values = [...participants];
+    values.splice(index, 1);
+    setParticipants(values);
+  };
+
+  const generateMessages = () => {
+    const shuffledParticipants = [...participants].sort(() => 0.5 - Math.random());
+    const newMessages = participants.map((participant, index) => {
+      const pair = shuffledParticipants[index === participants.length - 1 ? 0 : index + 1];
+      return {
+        ...participant,
+        message: `Hi ${participant.name}, you are invited to play with us! You need to make ${pair.name} say the word ${pair.word}. Best luck!`,
+      };
+    });
+    setMessages(newMessages);
+  };
+
   return (
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-      <VStack spacing={4}>
-        <Text fontSize="2xl">Your Blank Canvas</Text>
-        <Text>Chat with the agent to start making edits.</Text>
+      <VStack spacing={4} width="100%">
+        <Text fontSize="2xl">Social Game Setup</Text>
+        {participants.map((participant, index) => (
+          <VStack key={index} spacing={2} width="100%">
+            <Input
+              placeholder="Name"
+              name="name"
+              value={participant.name}
+              onChange={(event) => handleInputChange(index, event)}
+            />
+            <Input
+              placeholder="Phone"
+              name="phone"
+              value={participant.phone}
+              onChange={(event) => handleInputChange(index, event)}
+            />
+            <Input
+              placeholder="Word"
+              name="word"
+              value={participant.word}
+              onChange={(event) => handleInputChange(index, event)}
+            />
+            <IconButton
+              aria-label="Remove participant"
+              icon={<FaTrash />}
+              onClick={() => handleRemoveParticipant(index)}
+            />
+          </VStack>
+        ))}
+        <Button onClick={handleAddParticipant}>Add Participant</Button>
+        <Button onClick={generateMessages}>Generate Messages</Button>
+        {messages.length > 0 && (
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th>Name</Th>
+                <Th>Phone</Th>
+                <Th>Message</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {messages.map((message, index) => (
+                <Tr key={index}>
+                  <Td>{message.name}</Td>
+                  <Td>{message.phone}</Td>
+                  <Td>{message.message}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        )}
       </VStack>
     </Container>
   );
