@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, VStack, Input, Button, Table, Thead, Tbody, Tr, Th, Td, Text, IconButton, Textarea } from "@chakra-ui/react";
+import { Container, VStack, Input, Button, Table, Thead, Tbody, Tr, Th, Td, Text, IconButton, Textarea, Heading, Box } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 
 const Index = () => {
@@ -49,9 +49,10 @@ const Index = () => {
   };
 
   return (
-    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" bg="gray.50" p={4}>
       <VStack spacing={4} width="100%">
-        <Text fontSize="2xl">Social Game Setup</Text>
+        <Heading as="h1" size="2xl" mb={4}>Social Game</Heading>
+        <Text fontSize="lg" mb={6}>Welcome to the Social Game! The objective is to make your assigned partner say a specific word. Have fun!</Text>
         <Textarea
           placeholder="Paste names and phone numbers here, one per line (e.g., 'Name, Phone')"
           value={bulkInput}
